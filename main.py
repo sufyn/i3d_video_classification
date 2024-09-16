@@ -51,6 +51,12 @@ def extract_frames(video_path, num_frames=16):
 def predict_video(video_path, model):
     start_time = time.time()
     frames = extract_frames(video_path)
+    fig, ax = plt.subplots(4, 4, figsize=(10, 5))
+    for i in range(len(frames)):
+        ax[i // 4, i % 4].imshow(frames[i])
+        ax[i // 4, i % 4].axis('off')
+    st.pyplot(fig)
+
     prediction = model.predict(np.expand_dims(frames, axis=0))
     predicted_class_index = np.argmax(prediction)
     class_labels = ['nsfw', 'safe']
