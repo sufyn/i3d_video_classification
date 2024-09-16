@@ -6,7 +6,7 @@ import numpy as np
 import cv2
 import time
 import psutil
-
+import matplotlib as plt 
 # Define the URL to the file in GitHub Releases
 model_url = 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/nsfw_i3d_model.h5'
 
