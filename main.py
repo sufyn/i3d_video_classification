@@ -7,38 +7,42 @@ import cv2
 import time
 import psutil
 import matplotlib.pyplot as plt
-# Define the URL to the file in GitHub Releases
-model_url = 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/nsfw_i3d_model.h5'
 
-# Download the file
-model_path = 'nsfw_i3d_model.h5'
+# Define URLs for model files
+model_urls = {
+    'I3D NSFW': 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/nsfw_i3d_model.h5',
+    '3D CNN': 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/3dcnn250_model.h5',  # Replace with actual URL
+    'I3D Safe': 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/i3d250_model.h5'  # Replace with actual URL
+}
+
+# Define paths for model files
+model_paths = {
+    'I3D NSFW': 'nsfw_i3d_model.h5',
+    '3D CNN': '3dcnn_model.h5',
+    'I3D Safe': 'safe_i3d_model.h5'
+}
 
 def download_file(url, local_path):
     r = requests.get(url, allow_redirects=True)
     with open(local_path, 'wb') as f:
         f.write(r.content)
 
-# Check if the model file is already downloaded
-if not os.path.isfile(model_path):
-    st.write('Downloading model file...')
-    download_file(model_url, model_path)
-    st.write('Download complete!')
+# Check if the model files are already downloaded
+for model_name, model_path in model_paths.items():
+    if not os.path.isfile(model_path):
+        st.write(f'Downloading {model_name} model file...')
+        download_file(model_urls[model_name], model_path)
+        st.write(f'{model_name} download complete!')
 
-# Load the model
-model_i3d = tf.keras.models.load_model(model_path)
+# Load all models into a dictionary
+models = {
+    'I3D NSFW': tf.keras.models.load_model(model_paths['I3D NSFW']),
+    '3D CNN': tf.keras.models.load_model(model_paths['3D CNN']),
+    'I3D Safe': tf.keras.models.load_model(model_paths['I3D Safe'])
+}
 
 # Define frame extraction function
 def extract_frames(video_path, num_frames=16):
-    """
-    Extract frames from a video file.
-
-    Args:
-    - video_path (str): Path to the video file.
-    - num_frames (int): Number of frames to extract (default is 16).
-
-    Returns:
-    - frames (np.array): Array of extracted frames.
-    """
     cap = cv2.VideoCapture(video_path)
     frames = []
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -63,19 +67,6 @@ def extract_frames(video_path, num_frames=16):
 
 # Define prediction function
 def predict_video(video_path, model):
-    """
-    Predicts the class of a video using the given model.
-
-    Args:
-    - video_path (str): Path to the video file.
-    - model (tf.keras.Model): The trained model.
-
-    Returns:
-    - predicted_class (str): Predicted class label.
-    - confidence_score (float): Confidence score of the prediction.
-    - prediction_time (float): Time taken for prediction.
-    - cpu_usage (float): CPU usage during prediction.
-    """
     start_time = time.time()
 
     # Extract frames from the video
@@ -102,6 +93,9 @@ def predict_video(video_path, model):
 st.title("NSFW Video Classification App")
 st.write("Upload a video and classify it as NSFW or Safe.")
 
+# Model selector
+selected_model_name = st.selectbox("Select Model", list(models.keys()))
+
 # Upload video file
 uploaded_file = st.file_uploader("Choose a video...", type=["mp4", "avi", "mov"])
 
@@ -114,10 +108,12 @@ if uploaded_file is not None:
 
     # Perform prediction when button is clicked
     if st.button("Predict"):
-        # Run the prediction
-        predicted_class, confidence_score, prediction_time, cpu_usage = predict_video("temp_video.mp4", model_i3d)
+        # Run the prediction using the selected model
+        model = models[selected_model_name]
+        predicted_class, confidence_score, prediction_time, cpu_usage = predict_video("temp_video.mp4", model)
 
         # Display prediction results
+        st.write(f"**Model Used:** {selected_model_name}")
         st.write(f"**Predicted Class:** {predicted_class}")
         st.write(f"**Confidence Score:** {confidence_score:.4f}")
         st.write(f"**Time Taken for Prediction:** {prediction_time:.4f} seconds")
@@ -133,4 +129,4 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
 # Footer
-st.write("Model: I3D for NSFW/Safe Classification")
+st.write("Model Options: I3D NSFW, 3D CNN, I3D Safe")
