@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 # Define URLs for model files
 model_urls = {
     'I3D NSFW': 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/nsfw_i3d_model.h5',
-    '3D CNN': 'https://github.com/sufyn/i3d_video_classification/releases/download/i3d/i3d250_model.h5',  # Replace with actual URL
-    'I3D': 'https://github.com/sufyn/i3d_video_classification/releases/download/i3d/3dcnn250_model.h5'  # Replace with actual URL
+    '3D CNN': 'https://github.com/sufyn/i3d_video_classification/releases/download/i3d/3dcnn250_model.h5',  # Replace with actual URL
+    'I3D': 'https://github.com/sufyn/i3d_video_classification/releases/download/i3d/i3d250_model.h5'  # Replace with actual URL
 }
 
 # Define paths for model files
