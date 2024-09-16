@@ -11,15 +11,15 @@ import matplotlib.pyplot as plt
 # Define URLs for model files
 model_urls = {
     'I3D NSFW': 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/nsfw_i3d_model.h5',
-    '3D CNN': 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/3dcnn250_model.h5',  # Replace with actual URL
-    'I3D Safe': 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/i3d250_model.h5'  # Replace with actual URL
+    '3D CNN': 'https://github.com/sufyn/i3d_video_classification/releases/download/i3d/i3d250_model.h5',  # Replace with actual URL
+    'I3D': 'https://github.com/sufyn/i3d_video_classification/releases/download/i3d/3dcnn250_model.h5'  # Replace with actual URL
 }
 
 # Define paths for model files
 model_paths = {
     'I3D NSFW': 'nsfw_i3d_model.h5',
     '3D CNN': '3dcnn_model.h5',
-    'I3D Safe': 'safe_i3d_model.h5'
+    'I3D': 'i3d_model.h5'
 }
 
 def download_file(url, local_path):
@@ -38,7 +38,7 @@ for model_name, model_path in model_paths.items():
 models = {
     'I3D NSFW': tf.keras.models.load_model(model_paths['I3D NSFW']),
     '3D CNN': tf.keras.models.load_model(model_paths['3D CNN']),
-    'I3D Safe': tf.keras.models.load_model(model_paths['I3D Safe'])
+    'I3D': tf.keras.models.load_model(model_paths['I3D'])
 }
 
 # Define frame extraction function
@@ -129,4 +129,4 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
 # Footer
-st.write("Model Options: I3D NSFW, 3D CNN, I3D Safe")
+st.write("Model Options: I3D NSFW, 3D CNN, I3D")
