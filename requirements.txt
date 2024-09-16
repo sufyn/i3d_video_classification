@@ -5,3 +5,4 @@ matplotlib
 opencv-python-headless
 # opencv-contrib-python
 fastai
+psutil  
