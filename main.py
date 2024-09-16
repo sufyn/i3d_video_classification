@@ -8,7 +8,7 @@ import time
 import psutil
 
 # Define the URL to the file in GitHub Releases
-model_url = 'https://github.com/yourusername/yourrepo/releases/download/v1.0/nsfw_i3d_model.h5'
+model_url = 'https://github.com/sufyn/i3d_video_classification/releases/download/nsfw/nsfw_i3d_model.h5'
 
 # Download the file
 model_path = 'nsfw_i3d_model.h5'
